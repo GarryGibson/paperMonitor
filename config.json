@@ -1,0 +1,13 @@
+{
+    "DEFAULT":{
+        "DBCONNECTION":{
+            "HOST":"localhost",
+            "PORT":3307,
+            "DATABASE":"humidtemp",
+            "USER":"user",
+            "PASSWORD":"password"
+        }
+
+    }
+
+}
