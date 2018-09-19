@@ -35,9 +35,11 @@ def saveTempHumid(connection, temp, humid):
             cursor.execute(query,args)
             connection.commit()
             cursor.close()
+            return True
         else:
             logging.debug('Tried to run query, but connection is None')
+            return False
     except mysql.connector.Error as oops:
         logging.exception('Query execution failed')
         cursor.close()
-
+        return False

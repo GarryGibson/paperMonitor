@@ -57,6 +57,9 @@ def main():
     hum_image = Image.new('1', (96, 32), 255)  # 255: clear the frame
     draw_hum = ImageDraw.Draw(hum_image)
     
+    db_image = Image.new('1', (96, 32), 255)
+    draw_db = ImageDraw.Draw(db_image)
+
     small_font = ImageFont.truetype('/usr/share/fonts/truetype/droid/DroidSans.ttf', 32)
     
     #font = ImageFont.truetype('/usr/share/fonts/truetype/freefont/FreeMonoBold.ttf', 32) #font file, size
@@ -65,9 +68,13 @@ def main():
     image_width, image_height = time_image.size
     temp_width, temp_height = temp_image.size
     hum_width,hum_height = hum_image.size
+    db_width, db_height = db_image.size
+
     
     readings = 0
     readingsBeforeSaving = 6 * 5 #we're waiting 10 secs, so 6 per min x 5  = 5 mins
+    lastDBWrite = True
+
     while (True):
     	#TIME
         # draw a rectangle to clear the image
@@ -94,11 +101,22 @@ def main():
         
         if readings >= readingsBeforeSaving:
             if db is not None and db:
-                dbconnect.saveTempHumid(db,temperature,humidity)
+                lastDBWrite = dbconnect.saveTempHumid(db,temperature,humidity)
                 readings = 0
-            else:
-                print("No connection, attempting reconnect")
-                db = dbconnect.getConnection() #no db connection, so try and get one
+        
+        if db is None or lastDBWrite is False:
+            print("No connection, or last write failed - attempting reconnect")
+            db = dbconnect.getConnection() #no db connection, so try and get one
+        
+        if lastDBWrite is False:
+            #display error on display
+            draw_db.rectangle((0,0,db_width,db_height),fill=255)
+            draw_db.text((0,0),'No DB',font=small_font,fill=0)
+            epd.set_frame_memory(db_image.rotate(270),10,100)
+        else:
+            #clear error on display
+            draw_db.rectangle((0,0,db_width,db_height),fill=255)
+            epd.set_frame_memory(db_image.rotate(270),10,100)
 
         epd.display_frame()
         time.sleep(10)
