@@ -30,16 +30,18 @@ def saveTempHumid(connection, temp, humid):
     args = (round(temp,2),round(humid,2))
 
     try:
-        if connection is not None:
+        logging.debug('Attempting DB write...')
+        if connection.is_connected():
             cursor = connection.cursor()
             cursor.execute(query,args)
             connection.commit()
             cursor.close()
+            logging.debug('..succeeded')
             return True
         else:
-            logging.debug('Tried to run query, but connection is None')
+            logging.debug('Tried to execute SQL, but not connected to DB')
             return False
     except mysql.connector.Error as oops:
-        logging.exception('Query execution failed')
+        logging.exception('SQL execution failed')
         cursor.close()
         return False
