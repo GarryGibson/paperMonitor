@@ -7,13 +7,25 @@ import ImageFont
 
 import sys
 import logging
+from logging.handlers import TimedRotatingFileHandler
 import Adafruit_DHT
 
 import dbconnect
 
-logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
-logging.getLogger('monitor')
-logging.debug('Starting up')
+LOG_FILE = 'monitor.log'
+
+logFormat = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+fileHandler = TimedRotatingFileHandler(LOG_FILE,when='midnight')
+fileHandler.setFormatter(logFormat)
+consoleHandler = logging.StreamHandler(sys.stdout)
+consoleHandler.setFormatter(logFormat)
+
+log = logging.getLogger('monitor')
+log.setLevel(logging.DEBUG)
+log.addHandler(fileHandler)
+log.addHandler(consoleHandler)
+
+log.debug('Starting up')
 
 def main():
     
@@ -109,7 +121,7 @@ def main():
                 draw_db.rectangle((0,0,db_width,db_height),fill=255)
                 epd.set_frame_memory(db_image.rotate(270),10,100)
             else:
-                logging.error("No connection, or last write failed - attempting reconnect")
+                log.error("No connection, or last write failed - attempting reconnect")
                 db = dbconnect.getConnection() #no db connection, so try and get one
                 #display error on display
                 draw_db.rectangle((0,0,db_width,db_height),fill=255)
