@@ -45,3 +45,7 @@ def saveTempHumid(connection, temp, humid):
         log.exception('SQL execution failed')
         cursor.close()
         return False
+    except errors.InterfaceError:
+        og.exception('Lost connection during SQL execution')
+        cursor.close()
+        return False
