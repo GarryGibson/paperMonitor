@@ -3,8 +3,12 @@ import logging
 import ConfigParser
 import json
 import io
+import os
 
-config = json.load(io.open('config.json','r'))
+here = os.path.dirname(os.path.abspath(__file__))
+
+configFilename = os.path.join(here, 'config.json')
+config = json.load(io.open(configFilename,'r'))
 log = logging.getLogger('monitor')
 
 def getConnection():
