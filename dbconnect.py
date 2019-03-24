@@ -24,9 +24,9 @@ def getConnection():
                 
         if(connection):
             #log.debug('Connected')
-        return connection
+            return connection
     except Exception as err:
-        log.exception(f"Failed to connect:{e.message}")
+        log.exception("Failed to connect:{0}".format(err.message))
         return None
 
 def saveTempHumid(connection, temp, humid):
@@ -34,13 +34,13 @@ def saveTempHumid(connection, temp, humid):
     args = (round(temp,2),round(humid,2))
 
     try:
-        log.debug('Attempting DB write...')
+        #log.debug('Attempting DB write...')
         if connection.is_connected():
             cursor = connection.cursor()
             cursor.execute(query,args)
             connection.commit()
             cursor.close()
-            log.debug('..succeeded')
+            #log.debug('..succeeded')
             return True
         else:
             log.debug('Tried to execute SQL, but not connected to DB')
