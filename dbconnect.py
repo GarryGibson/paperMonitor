@@ -13,7 +13,7 @@ log = logging.getLogger('monitor')
 
 def getConnection():
     try:
-        log.debug('Connecting to DB..')
+        #log.debug('Connecting to DB..')
         host = str(config['DEFAULT']['DBCONNECTION']['HOST'])
         port = config['DEFAULT']['DBCONNECTION']['PORT']
         database = str(config['DEFAULT']['DBCONNECTION']['DATABASE'])
@@ -23,10 +23,10 @@ def getConnection():
         connection = mysql.connector.connect(host=host,port=port,database=database,user=user,password=password,connection_timeout=10)
                 
         if(connection):
-            log.debug('Connected')
+            #log.debug('Connected')
         return connection
-    except mysql.connector.Error as err:
-        log.exception('Failed to connect:')
+    except Exception as err:
+        log.exception(f"Failed to connect:{e.message}")
         return None
 
 def saveTempHumid(connection, temp, humid):
