@@ -25,9 +25,10 @@ def getConnection():
         if(connection):
             #log.debug('Connected')
             return connection
-    except Exception as err:
-        log.exception("Failed to connect:{0}".format(err.message))
-        return None
+    except(mysql.exception, InterfaceError):
+        log.exception("Failed to connect")
+    
+    return None
 
 def saveTempHumid(connection, temp, humid):
     query = "INSERT INTO sensorreading (Temperature,Humidity) VALUES(%s,%s)"
