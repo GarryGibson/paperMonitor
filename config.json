@@ -4,8 +4,8 @@
             "HOST":"192.168.0.80",
             "PORT":3307,
             "DATABASE":"humidtemp",
-            "USER":"garry",
-            "PASSWORD":"creative2G"
+            "USER":"user",
+            "PASSWORD":"password"
         }
 
     },
@@ -14,8 +14,8 @@
             "HOST":"192.168.0.40",
             "PORT":3306,
             "DATABASE":"humidtemp",
-            "USER":"root",
-            "PASSWORD":"moose"
+            "USER":"user",
+            "PASSWORD":"password"
         }
 
     }
