@@ -1,11 +1,21 @@
 {
-    "DEFAULT":{
+    "OLD":{
         "DBCONNECTION":{
-            "HOST":"localhost",
+            "HOST":"192.168.0.80",
             "PORT":3307,
             "DATABASE":"humidtemp",
-            "USER":"user",
-            "PASSWORD":"password"
+            "USER":"garry",
+            "PASSWORD":"creative2G"
+        }
+
+    },
+    "DEFAULT":{
+        "DBCONNECTION":{
+            "HOST":"192.168.0.40",
+            "PORT":3306,
+            "DATABASE":"humidtemp",
+            "USER":"root",
+            "PASSWORD":"moose"
         }
 
     }

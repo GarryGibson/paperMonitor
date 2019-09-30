@@ -4,6 +4,7 @@ import ConfigParser
 import json
 import io
 import os
+import sys
 
 here = os.path.dirname(os.path.abspath(__file__))
 
@@ -25,10 +26,13 @@ def getConnection():
         if(connection):
             #log.debug('Connected')
             return connection
-    except(mysql.exception, InterfaceError):
-        log.exception("Failed to connect")
-    
-    return None
+
+    except mysql.connector.errors.InterfaceError as err:
+        log.exception(err)
+        return None
+    except:
+        log.exception(sys.exc_info()[0])
+        return None
 
 def saveTempHumid(connection, temp, humid):
     query = "INSERT INTO sensorreading (Temperature,Humidity) VALUES(%s,%s)"
@@ -46,11 +50,14 @@ def saveTempHumid(connection, temp, humid):
         else:
             log.debug('Tried to execute SQL, but not connected to DB')
             return False
-    except mysql.connector.Error as oops:
-        log.exception('SQL execution failed')
-        cursor.close()
-        return False
-    except errors.InterfaceError:
-        log.exception('Lost connection during SQL execution')
-        cursor.close()
+  #  except mysql.connector.Error as oops:
+  #      log.exception('SQL execution failed')
+  #      cursor.close()
+  #      return False
+  #  except errors.InterfaceError:
+  #      log.exception('Lost connection during SQL execution')
+  #      cursor.close()
+  #      return False
+    except:
+        log.exception(sys.exc_info()[0])
         return False

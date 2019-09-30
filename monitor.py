@@ -114,7 +114,7 @@ def main():
         epd.set_frame_memory(hum_image.rotate(270), 10, 200)
         
         if readings >= readingsBeforeSaving:
-            if db.is_connected():
+            if db is not None and db.is_connected():
                 lastDBWrite = dbconnect.saveTempHumid(db,temperature,humidity)
                 readings = 0
                 #clear error on display
